@@ -1,0 +1,61 @@
+{
+  "envId": "你的环境ID",
+  "region": "ap-shanghai",
+  "version": "2.0",
+  "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
+  "framework": {
+    "name": "static",
+    "plugins": {}
+  },
+  "functionRoot": "./cloud-functions",
+  "functions": [
+    {
+      "name": "product-api",
+      "timeout": 60,
+      "envVariables": {
+        "TCB_ENV": "${envId}"
+      },
+      "handler": "index.main"
+    },
+    {
+      "name": "charity-api",
+      "timeout": 60,
+      "envVariables": {
+        "TCB_ENV": "${envId}"
+      },
+      "handler": "index.main"
+    },
+    {
+      "name": "ad-api",
+      "timeout": 60,
+      "envVariables": {
+        "TCB_ENV": "${envId}"
+      },
+      "handler": "index.main"
+    },
+    {
+      "name": "application-api",
+      "timeout": 60,
+      "envVariables": {
+        "TCB_ENV": "${envId}"
+      },
+      "handler": "index.main"
+    },
+    {
+      "name": "stats-api",
+      "timeout": 60,
+      "envVariables": {
+        "TCB_ENV": "${envId}"
+      },
+      "handler": "index.main"
+    },
+    {
+      "name": "auth-api",
+      "timeout": 60,
+      "envVariables": {
+        "TCB_ENV": "${envId}"
+      },
+      "handler": "index.main"
+    }
+  ]
+}

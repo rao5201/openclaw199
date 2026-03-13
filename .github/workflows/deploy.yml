@@ -1,0 +1,42 @@
+name: Deploy to CloudBase
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '16.x'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 安装 CloudBase CLI
+        run: |
+          npm install -g @cloudbase/cli
+
+      - name: 配置 CloudBase
+        run: |
+          cloudbase login --apiKeyId ${{ secrets.TCB_KEY_ID }} --apiKey ${{ secrets.TCB_KEY }}
+
+      - name: 部署云函数
+        run: |
+          cloudbase functions:deploy
+        working-directory: ./cloud-functions
+
+      - name: 部署静态网站
+        run: |
+          cloudbase hosting deploy ./admin -e ${{ secrets.TCB_ENV_ID }}
+        working-directory: ./

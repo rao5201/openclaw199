@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 后台管理系统</title>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <!-- CloudBase SDK -->
+    <script src="cloudbase-sdk.js"></script>
+    <!-- API 配置 -->
+    <script src="assets/js/api-config.js"></script>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">🛡️</div>
+            <div class="brand">OpenClaw Admin</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">数据看板</span>
+            </a>
+            <a href="#products" class="nav-item" data-page="products">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">产品管理</span>
+            </a>
+            <a href="#charity" class="nav-item" data-page="charity">
+                <span class="nav-icon">❤️</span>
+                <span class="nav-text">公益管理</span>
+            </a>
+            <a href="#ads" class="nav-item" data-page="ads">
+                <span class="nav-icon">📢</span>
+                <span class="nav-text">广告位管理</span>
+            </a>
+            <a href="#applications" class="nav-item" data-page="applications">
+                <span class="nav-icon">📝</span>
+                <span class="nav-text">申请管理</span>
+            </a>
+            <a href="#settings" class="nav-item" data-page="settings">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">系统设置</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name" id="currentUsername">Admin</div>
+                    <div class="user-role">超级管理员</div>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="handleLogout()">
+                <span>🚪</span>
+                <span>退出登录</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 顶部导航 -->
+        <header class="top-bar">
+            <button class="btn-menu-toggle" onclick="toggleSidebar()">
+                <span>☰</span>
+            </button>
+            <div class="search-box">
+                <input type="text" placeholder="搜索..." id="searchInput">
+            </div>
+            <div class="top-actions">
+                <button class="btn-icon" onclick="showNotifications()">
+                    <span>🔔</span>
+                    <span class="badge">3</span>
+                </button>
+                <button class="btn-icon" onclick="toggleDarkMode()">
+                    <span>🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- 页面内容容器 -->
+        <div class="page-container">
+            <!-- 数据看板页面 -->
+            <section id="page-dashboard" class="page active">
+                <div class="page-header">
+                    <h1>数据看板</h1>
+                    <div class="date-filter">
+                        <select id="dateRange">
+                            <option value="today">今天</option>
+                            <option value="week">本周</option>
+                            <option value="month" selected>本月</option>
+                            <option value="year">今年</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 统计卡片 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">总访问量</span>
+                            <span class="stat-icon blue">👥</span>
+                        </div>
+                        <div class="stat-value" id="totalVisits">12,458</div>
+                        <div class="stat-change positive">
+                            <span>↑ 12.5%</span>
+                            <span>较上月</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">产品咨询</span>
+                            <span class="stat-icon purple">📦</span>
+                        </div>
+                        <div class="stat-value" id="productInquiries">238</div>
+                        <div class="stat-change positive">
+                            <span>↑ 8.2%</span>
+                            <span>较上月</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">公益捐款</span>
+                            <span class="stat-icon red">❤️</span>
+                        </div>
+                        <div class="stat-value" id="totalDonations">¥12,580</div>
+                        <div class="stat-change positive">
+                            <span>↑ 23.1%</span>
+                            <span>较上月</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-title">合作申请</span>
+                            <span class="stat-icon green">🤝</span>
+                        </div>
+                        <div class="stat-value" id="partnerApplications">56</div>
+                        <div class="stat-change negative">
+                            <span>↓ 3.4%</span>
+                            <span>较上月</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 图表区域 -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>访问趋势</h3>
+                            <select class="chart-filter">
+                                <option>最近7天</option>
+                                <option>最近30天</option>
+                            </select>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="visitChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>捐款来源</h3>
+                            <select class="chart-filter">
+                                <option>本月</option>
+                                <option>上月</option>
+                            </select>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="donationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 最近动态 -->
+                <div class="recent-activities">
+                    <h3>最近动态</h3>
+                    <div class="activity-list" id="activityList">
+                        <div class="activity-item">
+                            <span class="activity-time">10:30</span>
+                            <span class="activity-icon">📝</span>
+                            <span class="activity-text">收到新的合作申请 - XX科技公司</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="activity-time">09:45</span>
+                            <span class="activity-icon">❤️</span>
+                            <span class="activity-text">爱心用户 张三 捐赠 ¥500</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="activity-time">08:20</span>
+                            <span class="activity-icon">📦</span>
+                            <span class="activity-text">Shield Pro 产品页访问量突破1000</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 产品管理页面 -->
+            <section id="page-products" class="page">
+                <div class="page-header">
+                    <h1>产品管理</h1>
+                    <button class="btn-primary" onclick="openModal('productModal')">
+                        <span>➕</span>
+                        <span>添加产品</span>
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>产品名称</th>
+                                <th>版本</th>
+                                <th>价格</th>
+                                <th>状态</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                            <!-- 动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 公益管理页面 -->
+            <section id="page-charity" class="page">
+                <div class="page-header">
+                    <h1>公益管理</h1>
+                    <button class="btn-primary" onclick="openModal('donationModal')">
+                        <span>➕</span>
+                        <span>添加捐款记录</span>
+                    </button>
+                </div>
+
+                <div class="charity-summary">
+                    <div class="summary-card">
+                        <h3>本年度目标</h3>
+                        <div class="goal-amount">¥2,000,000</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 12.5%"></div>
+                        </div>
+                        <div class="progress-text">已完成 12.5%</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>捐赠人</th>
+                                <th>金额</th>
+                                <th>方式</th>
+                                <th>时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donationTableBody">
+                            <!-- 动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 广告位管理页面 -->
+            <section id="page-ads" class="page">
+                <div class="page-header">
+                    <h1>广告位管理</h1>
+                </div>
+
+                <div class="ads-grid">
+                    <div class="ad-card">
+                        <div class="ad-header">
+                            <span class="ad-title">侧边广告位 (左侧)</span>
+                            <span class="ad-badge active">在线</span>
+                        </div>
+                        <div class="ad-content">
+                            <p>招商热线</p>
+                            <p class="ad-contact">rao5201@126.com</p>
+                        </div>
+                        <div class="ad-actions">
+                            <button class="btn-edit" onclick="editAd(1)">编辑</button>
+                            <button class="btn-toggle" onclick="toggleAd(1)">下线</button>
+                        </div>
+                    </div>
+
+                    <div class="ad-card">
+                        <div class="ad-header">
+                            <span class="ad-title">侧边广告位 (右侧)</span>
+                            <span class="ad-badge active">在线</span>
+                        </div>
+                        <div class="ad-content">
+                            <p>公益赞助</p>
+                            <p class="ad-contact">查看详情</p>
+                        </div>
+                        <div class="ad-actions">
+                            <button class="btn-edit" onclick="editAd(2)">编辑</button>
+                            <button class="btn-toggle" onclick="toggleAd(2)">下线</button>
+                        </div>
+                    </div>
+
+                    <div class="ad-card">
+                        <div class="ad-header">
+                            <span class="ad-title">底部广告位 01</span>
+                            <span class="ad-badge active">在线</span>
+                        </div>
+                        <div class="ad-content">
+                            <p>广告位 01</p>
+                        </div>
+                        <div class="ad-actions">
+                            <button class="btn-edit" onclick="editAd(3)">编辑</button>
+                            <button class="btn-toggle" onclick="toggleAd(3)">下线</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 申请管理页面 -->
+            <section id="page-applications" class="page">
+                <div class="page-header">
+                    <h1>申请管理</h1>
+                    <div class="filter-group">
+                        <select id="appFilter">
+                            <option value="all">全部</option>
+                            <option value="partner">商业合作</option>
+                            <option value="donate">公益赞助</option>
+                        </select>
+                        <select id="statusFilter">
+                            <option value="all">全部状态</option>
+                            <option value="pending">待处理</option>
+                            <option value="processed">已处理</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>申请人/公司</th>
+                                <th>联系方式</th>
+                                <th>提交时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationTableBody">
+                            <!-- 动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 系统设置页面 -->
+            <section id="page-settings" class="page">
+                <div class="page-header">
+                    <h1>系统设置</h1>
+                </div>
+
+                <div class="settings-container">
+                    <div class="settings-section">
+                        <h3>基本信息</h3>
+                        <div class="form-group">
+                            <label>网站标题</label>
+                            <input type="text" value="OpenClaw 安全生态联盟 | 商业·公益·安全">
+                        </div>
+                        <div class="form-group">
+                            <label>联系邮箱</label>
+                            <input type="email" value="rao5201@126.com">
+                        </div>
+                        <div class="form-group">
+                            <label>年度公益目标</label>
+                            <input type="number" value="2000000">
+                        </div>
+                        <button class="btn-primary">保存设置</button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>管理员账户</h3>
+                        <div class="form-group">
+                            <label>当前用户名</label>
+                            <input type="text" value="admin" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>新密码</label>
+                            <input type="password" placeholder="留空则不修改">
+                        </div>
+                        <div class="form-group">
+                            <label>确认新密码</label>
+                            <input type="password" placeholder="留空则不修改">
+                        </div>
+                        <button class="btn-primary">更新密码</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 模态框 - 产品编辑 -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>产品编辑</h3>
+                <button class="btn-close" onclick="closeModal('productModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="form-group">
+                        <label>产品名称 *</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>版本 *</label>
+                        <input type="text" id="productVersion" required>
+                    </div>
+                    <div class="form-group">
+                        <label>价格</label>
+                        <input type="text" id="productPrice">
+                    </div>
+                    <div class="form-group">
+                        <label>状态</label>
+                        <select id="productStatus">
+                            <option value="active">上架</option>
+                            <option value="inactive">下架</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <textarea id="productDescription" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('productModal')">取消</button>
+                <button class="btn-primary" onclick="saveProduct()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 - 捐款编辑 -->
+    <div class="modal" id="donationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>捐款记录编辑</h3>
+                <button class="btn-close" onclick="closeModal('donationModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="donationForm">
+                    <input type="hidden" id="donationId">
+                    <div class="form-group">
+                        <label>捐赠人 *</label>
+                        <input type="text" id="donorName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>金额 *</label>
+                        <input type="number" id="donationAmount" required>
+                    </div>
+                    <div class="form-group">
+                        <label>方式</label>
+                        <select id="donationMethod">
+                            <option value="online">在线支付</option>
+                            <option value="bank">银行转账</option>
+                            <option value="wechat">微信支付</option>
+                            <option value="alipay">支付宝</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>状态</label>
+                        <select id="donationStatus">
+                            <option value="confirmed">已确认</option>
+                            <option value="pending">待确认</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>备注</label>
+                        <textarea id="donationNote" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('donationModal')">取消</button>
+                <button class="btn-primary" onclick="saveDonation()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>

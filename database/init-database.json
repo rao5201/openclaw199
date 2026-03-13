@@ -1,0 +1,202 @@
+{
+  "collections": [
+    {
+      "name": "products",
+      "description": "产品信息",
+      "indexes": [
+        {
+          "name": "status_idx",
+          "fields": ["status"]
+        },
+        {
+          "name": "created_idx",
+          "fields": ["createdAt"]
+        }
+      ]
+    },
+    {
+      "name": "charities",
+      "description": "公益捐款记录",
+      "indexes": [
+        {
+          "name": "status_idx",
+          "fields": ["status"]
+        },
+        {
+          "name": "date_idx",
+          "fields": ["date"]
+        }
+      ]
+    },
+    {
+      "name": "ads",
+      "description": "广告位配置",
+      "indexes": [
+        {
+          "name": "position_idx",
+          "fields": ["position"]
+        },
+        {
+          "name": "status_idx",
+          "fields": ["status"]
+        }
+      ]
+    },
+    {
+      "name": "applications",
+      "description": "合作申请记录",
+      "indexes": [
+        {
+          "name": "type_idx",
+          "fields": ["type"]
+        },
+        {
+          "name": "status_idx",
+          "fields": ["status"]
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "description": "系统设置",
+      "indexes": [
+        {
+          "name": "key_idx",
+          "fields": ["key"],
+          "unique": true
+        }
+      ]
+    },
+    {
+      "name": "admins",
+      "description": "管理员账户",
+      "indexes": [
+        {
+          "name": "username_idx",
+          "fields": ["username"],
+          "unique": true
+        }
+      ]
+    }
+  ],
+  "initialData": {
+    "admins": [
+      {
+        "username": "admin",
+        "password": "admin123",
+        "permissions": ["read", "write", "delete", "admin"],
+        "createdAt": "2025-01-01T00:00:00.000Z"
+      }
+    ],
+    "settings": [
+      {
+        "key": "annualGoal",
+        "value": "100000",
+        "description": "年度公益捐款目标（元）",
+        "updatedAt": "2025-01-01T00:00:00.000Z"
+      },
+      {
+        "key": "siteName",
+        "value": "安全防护系统",
+        "description": "网站名称",
+        "updatedAt": "2025-01-01T00:00:00.000Z"
+      },
+      {
+        "key": "contactEmail",
+        "value": "contact@example.com",
+        "description": "联系邮箱",
+        "updatedAt": "2025-01-01T00:00:00.000Z"
+      },
+      {
+        "key": "contactPhone",
+        "value": "400-888-8888",
+        "description": "联系电话",
+        "updatedAt": "2025-01-01T00:00:00.000Z"
+      },
+      {
+        "key": "companyAddress",
+        "value": "北京市海淀区中关村大街1号",
+        "description": "公司地址",
+        "updatedAt": "2025-01-01T00:00:00.000Z"
+      }
+    ],
+    "ads": [
+      {
+        "position": "left",
+        "imageUrl": "",
+        "link": "#",
+        "status": "offline",
+        "order": 1,
+        "createdAt": "2025-01-01T00:00:00.000Z"
+      },
+      {
+        "position": "right",
+        "imageUrl": "",
+        "link": "#",
+        "status": "offline",
+        "order": 1,
+        "createdAt": "2025-01-01T00:00:00.000Z"
+      }
+    ],
+    "products": [
+      {
+        "name": "Shield Pro 专业版",
+        "price": "2999",
+        "description": "企业级网络安全防护解决方案",
+        "image": "",
+        "status": "online",
+        "createdAt": "2025-01-01T00:00:00.000Z",
+        "updatedAt": "2025-01-01T00:00:00.000Z"
+      },
+      {
+        "name": "Scanner 扫描版",
+        "price": "999",
+        "description": "快速安全漏洞扫描工具",
+        "image": "",
+        "status": "online",
+        "createdAt": "2025-01-01T00:00:00.000Z",
+        "updatedAt": "2025-01-01T00:00:00.000Z"
+      }
+    ],
+    "charities": [
+      {
+        "donor": "匿名捐赠者",
+        "amount": "5000",
+        "date": "2025-01-15T10:30:00.000Z",
+        "status": "confirmed",
+        "message": "支持网络安全公益事业",
+        "createdAt": "2025-01-15T10:30:00.000Z"
+      },
+      {
+        "donor": "张三",
+        "amount": "1000",
+        "date": "2025-01-20T14:20:00.000Z",
+        "status": "confirmed",
+        "message": "希望能帮助更多人",
+        "createdAt": "2025-01-20T14:20:00.000Z"
+      }
+    ],
+    "applications": [
+      {
+        "type": "cooperation",
+        "name": "李四",
+        "company": "科技有限公司",
+        "email": "lisi@example.com",
+        "phone": "13800138000",
+        "content": "希望能与贵公司建立合作关系",
+        "status": "pending",
+        "createdAt": "2025-01-18T09:00:00.000Z"
+      },
+      {
+        "type": "sponsorship",
+        "name": "王五",
+        "company": "",
+        "email": "wangwu@example.com",
+        "phone": "13900139000",
+        "content": "希望赞助网络安全公益活动",
+        "status": "pending",
+        "createdAt": "2025-01-22T16:30:00.000Z"
+      }
+    ]
+  }
+}
