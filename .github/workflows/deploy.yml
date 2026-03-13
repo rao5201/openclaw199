@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  NODE_VERSION: '16.x'
+  NODE_VERSION: '18.x'
 
 jobs:
   deploy:
@@ -31,12 +31,32 @@ jobs:
         run: |
           cloudbase login --apiKeyId ${{ secrets.TCB_KEY_ID }} --apiKey ${{ secrets.TCB_KEY }}
 
-      - name: 部署云函数
-        run: |
-          cloudbase functions:deploy
-        working-directory: ./cloud-functions
-
       - name: 部署静态网站
         run: |
-          cloudbase hosting deploy ./admin -e ${{ secrets.TCB_ENV_ID }}
-        working-directory: ./
+          cloudbase hosting:deploy . -e ${{ secrets.TCB_ENV_ID }}
+        env:
+          TCB_ENV_ID: ${{ secrets.TCB_ENV_ID }}
+
+      - name: 部署云函数
+        run: |
+          for dir in cloud-functions/*/; do
+            if [ -f "$dir/package.json" ]; then
+              cd "$dir"
+              cloudbase functions:deploy -e ${{ secrets.TCB_ENV_ID }}
+              cd ../..
+            fi
+          done
+        env:
+          TCB_ENV_ID: ${{ secrets.TCB_ENV_ID }}
+
+      - name: 部署成功通知
+        if: success()
+        run: |
+          echo "✅ 部署成功！"
+          echo "🌐 网站地址: https://${{ secrets.TCB_ENV_ID }}.tcb.qcloud.la"
+          echo "📊 CloudBase 控制台: https://console.cloud.tencent.com/tcb"
+
+      - name: 部署失败通知
+        if: failure()
+        run: |
+          echo "❌ 部署失败，请检查日志"
