@@ -1,205 +1,235 @@
-# OpenClaw 安全联盟 - 后台管理系统
+# 🛡️ OpenClaw 安全防护网站 - 后台管理系统
 
-## 项目简介
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![CloudBase](https://img.shields.io/badge/CloudBase-Node.js-green.svg)
+![Deployment](https://img.shields.io/badge/deploy-GitHub%20Actions-orange.svg)
 
-这是一个为 OpenClaw 安全联盟网站开发的后台管理系统，用于管理网站内容、数据统计和用户交互。
+一个完整的安全防护网站后台管理系统，基于 CloudBase 无服务器架构部署。
 
-## 功能特性
+## ✨ 特性
 
-### 1. 登录认证
-- 安全的用户登录界面
-- 支持记住密码功能
-- 会话管理和自动过期
-- 默认账号：admin / admin123
+### 后台管理系统
+- 🔐 **安全登录** - 基于 CloudBase Auth 的身份验证
+- 📊 **数据看板** - 实时统计和可视化图表
+- 📦 **产品管理** - 产品的增删改查和上下架
+- ❤️ **公益管理** - 捐款记录管理和年度目标追踪
+- 📢 **广告位管理** - 侧边和底部广告位配置
+- 📝 **申请管理** - 商业合作和赞助申请处理
+- ⚙️ **系统设置** - 网站信息和管理员配置
 
-### 2. 数据看板
-- **统计卡片**：展示访问量、产品咨询、公益捐款、合作申请等关键指标
-- **趋势图表**：访问趋势折线图，使用 Chart.js 可视化
-- **来源分析**：捐款来源饼图，显示不同支付方式的占比
-- **最近动态**：实时显示最新的用户活动和系统事件
+### 技术架构
+- 🌐 **纯前端** - HTML/CSS/JavaScript，无需框架
+- ☁️ **CloudBase** - 无服务器架构，完全免费
+- 🚀 **云函数** - 6个 RESTful API 接口
+- 🗄️ **NoSQL 数据库** - CloudBase 文档数据库
+- 🔄 **自动部署** - GitHub Actions 持续集成
+- 📱 **响应式** - 支持桌面、平板、移动端
 
-### 3. 产品管理
-- 产品列表展示（产品名称、版本、价格、状态、创建时间）
-- 添加新产品
-- 编辑产品信息
-- 删除产品
-- 上架/下架状态切换
-
-### 4. 公益管理
-- 捐款记录列表（捐赠人、金额、方式、时间、状态）
-- 捐款进度可视化
-- 添加/编辑/删除捐款记录
-- 捐款状态确认（已确认/待确认）
-
-### 5. 广告位管理
-- 侧边广告位（左侧、右侧）管理
-- 底部10个广告位管理
-- 在线/下线状态切换
-- 广告内容编辑
-
-### 6. 申请管理
-- 商业合作申请列表
-- 公益赞助申请列表
-- 按类型和状态筛选
-- 查看申请详情
-- 标记为已处理
-
-### 7. 系统设置
-- 网站基本信息配置
-- 管理员账户管理
-- 密码修改
-- 年度公益目标设置
-
-## 技术栈
-
-- **HTML5**：语义化标签，结构清晰
-- **CSS3**：
-  - CSS 变量管理主题
-  - Flexbox 和 Grid 布局
-  - 响应式设计
-  - 动画和过渡效果
-- **JavaScript (ES6+)**：
-  - 模块化代码组织
-  - 本地存储管理数据
-  - 事件驱动交互
-- **Chart.js**：数据可视化图表
-
-## 项目结构
+## 📁 项目结构
 
 ```
 网站后台文件夹/
-├── index.html              # 主管理页面
-├── login.html              # 登录页面
-├── README.md              # 项目说明文档
-└── assets/
-    ├── css/
-    │   ├── admin.css       # 主管理页面样式
-    │   └── login.css       # 登录页面样式
-    ├── js/
-    │   ├── admin.js        # 主管理页面脚本
-    │   └── login.js        # 登录页面脚本
-    └── images/             # 图片资源目录
+├── assets/                    # 前端资源
+│   ├── css/
+│   │   ├── admin.css          # 管理页面样式
+│   │   └── login.css          # 登录页面样式
+│   └── js/
+│       ├── admin.js           # 管理功能脚本
+│       ├── login.js           # 登录功能脚本
+│       └── api-config.js       # API 配置和封装
+├── cloud-functions/           # 云函数 API
+│   ├── product-api/           # 产品管理
+│   ├── charity-api/           # 公益管理
+│   ├── ad-api/                # 广告位管理
+│   ├── application-api/       # 申请管理
+│   ├── stats-api/             # 数据统计
+│   └── auth-api/              # 登录验证
+├── database/                  # 数据库
+│   ├── init-database.json     # 初始数据
+│   └── init-script.js         # 初始化脚本
+├── .github/                   # GitHub 配置
+│   └── workflows/
+│       └── deploy.yml         # 自动部署
+├── index.html                 # 主管理页面
+├── login.html                 # 登录页面
+├── cloudbase-sdk.js           # CloudBase SDK
+├── cloudbaserc.json           # CloudBase 配置
+├── DEPLOYMENT_QUICKSTART.md   # 快速开始指南 ⭐
+├── DEPLOYMENT_GUIDE.md        # 完整部署指南
+└── README.md                  # 本文档
 ```
 
-## 快速开始
+## 🚀 快速开始
 
-### 1. 访问登录页面
-在浏览器中打开 `login.html` 文件
+### 方式一：使用 CloudBase 控制台（推荐新手）
 
-### 2. 登录系统
-- 用户名：admin
-- 密码：admin123
+**总用时：约 20 分钟**
 
-### 3. 开始管理
-登录成功后自动跳转到主管理页面，可以通过左侧导航栏切换不同功能模块
+1. **注册 CloudBase**
+   - 访问：https://cloud.tencent.com/
+   - 开通 CloudBase 免费版
+   - 创建环境，记录**环境 ID**
 
-## 响应式布局
+2. **初始化数据库**
+   - 进入 CloudBase 控制台 → "数据库"
+   - 上传 `database/init-database.json`
 
-系统完全支持响应式设计，适配以下设备：
+3. **部署云函数**
+   - 进入 CloudBase 控制台 → "云函数"
+   - 创建 6 个云函数（`cloud-functions/` 目录下）
+   - 为每个云函数创建 HTTP 触发器
 
-- **桌面端**（≥1024px）：完整功能，侧边栏固定
-- **平板端**（768px-1024px）：优化布局，图表自适应
-- **移动端**（<768px）：
-  - 侧边栏可收起，通过菜单按钮展开
-  - 表格横向滚动
-  - 统计卡片单列显示
-  - 触控友好的交互设计
+4. **部署静态网站**
+   - 进入 CloudBase 控制台 → "静态网站托管"
+   - 上传 `index.html`, `login.html`, `cloudbase-sdk.js`, `assets/` 目录
 
-## 主要功能说明
+5. **配置前端**
+   - 修改 `assets/js/api-config.js`
+   - 填入环境 ID 和 API 地址
+   - 重新上传配置文件
 
-### 数据看板
-- 实时统计网站访问数据和业务指标
-- 可视化图表展示趋势和分布
-- 最近动态实时更新
+**访问网站：** `https://<环境ID>.tcb.qcloud.la`
 
-### 产品管理
-- 管理 OpenClaw Shield Pro、ClawScanner 等产品信息
-- 支持产品版本管理和状态控制
-- 表单验证确保数据完整性
+### 方式二：使用 GitHub Actions（推荐开发者）
 
-### 公益管理
-- 追踪捐款记录和进度
-- 目标完成度可视化
-- 捐款来源统计分析
+1. **准备 CloudBase 环境**（同方式一）
 
-### 广告位管理
-- 统一管理所有广告位
-- 快速上线/下线控制
-- 支持内容编辑
+2. **配置 GitHub Secrets**
+   - 进入仓库 Settings → Secrets
+   - 添加 `TCB_KEY_ID`, `TCB_KEY`, `TCB_ENV_ID`
 
-### 申请管理
-- 统一处理商业合作和公益赞助申请
-- 按类型和状态筛选
-- 申请处理工作流
+3. **自动部署**
+   - 推送代码到 `main` 分支
+   - 自动触发部署
 
-## 数据存储
+## 📖 详细文档
 
-当前版本使用 `localStorage` 进行数据存储：
-- 登录状态
-- 用户信息
-- 会话时间
+| 文档 | 说明 |
+|------|------|
+| [快速开始指南](./DEPLOYMENT_QUICKSTART.md) | 3步快速上线（5分钟阅读） |
+| [完整部署指南](./DEPLOYMENT_GUIDE.md) | 详细步骤和问题排查（30分钟） |
+| [部署方案设计](./DEPLOYMENT_PLAN.md) | 架构设计和技术选型 |
 
-**注意**：演示数据存储在内存中，刷新页面后会重置。生产环境需要对接后端数据库。
+## 🔑 默认账户
 
-## 浏览器兼容性
+**管理员登录信息：**
+- 用户名：`admin`
+- 密码：`admin123`
 
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+> ⚠️ **安全提醒**：部署成功后请立即修改默认密码！
 
-## 安全特性
+## 💰 成本说明
 
-- 密码输入支持显示/隐藏切换
-- 登录表单验证
-- 会话超时自动登出
-- CSRF 防护（生产环境需实现）
-- XSS 防护（输入转义）
+### CloudBase 免费额度
 
-## 后续扩展建议
+| 资源 | 免费额度 |
+|------|---------|
+| 静态网站托管 | 5GB 存储 + 5GB/月 流量 |
+| 云函数 | 4 万次调用/月 + 40万 GBs/月 |
+| NoSQL 数据库 | 2GB 存储 + 5 万次读/日 + 3 万次写/日 |
+| 云存储 | 5GB 存储 + 5GB/月 下行流量 |
+| CDN | 10GB/月 流量 |
 
-1. **后端对接**
-   - API 集成实现真实数据持久化
-   - JWT 身份验证
-   - 角色权限管理
+**结论：** 个人或小型项目完全免费！
 
-2. **功能增强**
-   - 数据导出（Excel/PDF）
-   - 批量操作
-   - 高级搜索和筛选
-   - 操作日志记录
+## 🌟 云函数 API
 
-3. **性能优化**
-   - 数据分页加载
-   - 图表懒加载
-   - 图片压缩优化
-   - 缓存机制
+### API 端点
 
-4. **用户体验**
-   - 更多动画效果
-   - 主题切换
-   - 快捷键支持
-   - 拖拽排序
+| 云函数 | 功能 | HTTP 方法 | 说明 |
+|--------|------|-----------|------|
+| `product-api` | 产品管理 | GET/POST/PUT/DELETE | 产品 CRUD |
+| `charity-api` | 公益管理 | GET/POST/PUT | 捐款记录和统计 |
+| `ad-api` | 广告位管理 | GET/PUT | 广告位状态 |
+| `application-api` | 申请管理 | GET/POST/PUT | 申请处理 |
+| `stats-api` | 数据统计 | GET | 看板数据 |
+| `auth-api` | 登录验证 | GET/POST | 管理员登录 |
 
-## 使用许可
+### 数据库集合
 
-本系统为 OpenClaw 安全联盟内部使用，未经授权不得外传或用于商业用途。
+- `products` - 产品信息
+- `charities` - 公益捐款记录
+- `ads` - 广告位配置
+- `applications` - 申请记录
+- `settings` - 系统设置
+- `admins` - 管理员账户
 
-## 技术支持
+## 🛠️ 本地开发
 
-如有问题，请联系：
-- 邮箱：rao5201@126.com
-- 网站：OpenClaw 安全生态联盟
+### 环境要求
 
-## 更新日志
+- Node.js 16.x 或更高版本
+- 现代浏览器（Chrome, Edge, Firefox）
 
-### v1.0.0 (2024-03-13)
-- ✅ 完整的后台管理系统
-- ✅ 登录认证功能
-- ✅ 数据看板和统计图表
-- ✅ 产品管理功能
-- ✅ 公益管理功能
-- ✅ 广告位管理功能
-- ✅ 申请管理功能
-- ✅ 系统设置功能
-- ✅ 响应式布局支持
+### 开发模式
+
+1. 克隆仓库：
+```bash
+git clone https://github.com/rao5201/openclaw199.git
+cd openclaw199
+```
+
+2. 直接打开 `login.html` 或 `index.html` 即可使用（开发模式使用模拟数据）
+
+3. 修改代码后，推送到 GitHub 自动部署
+
+## 📝 配置说明
+
+### 1. CloudBase 环境配置
+
+编辑 `cloudbaserc.json`：
+
+```json
+{
+  "envId": "security-website-xxxxx",  // 替换为实际环境 ID
+  "region": "ap-shanghai"             // 地域
+}
+```
+
+### 2. 前端 API 配置
+
+编辑 `assets/js/api-config.js`：
+
+```javascript
+const config = {
+  envId: 'security-website-xxxxx',
+  apiBase: 'https://security-website-xxxxx.service.tcloudbase.com',
+  // ...
+};
+```
+
+## 🔧 常见问题
+
+### Q: 部署失败怎么办？
+
+A: 查看详细部署指南中的"常见问题"章节：[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
+
+### Q: 如何修改管理员密码？
+
+A: 在 CloudBase 控制台的数据库中，找到 `admins` 集合，修改 `password` 字段
+
+### Q: 如何绑定自定义域名？
+
+A: 在 CloudBase 控制台的"静态网站托管"中添加域名（需要备案）
+
+### Q: 免费额度用完了怎么办？
+
+A: 进入 CloudBase 控制台查看费用概览，按需升级套餐
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📄 许可证
+
+MIT License
+
+## 📞 支持
+
+- **CloudBase 文档**：https://docs.cloudbase.net/
+- **GitHub Actions 文档**：https://docs.github.com/cn/actions
+- **问题反馈**：提交 Issue
+
+---
+
+**祝您使用愉快！** 🎉
